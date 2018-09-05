@@ -26,6 +26,7 @@ Node.js + Express + MongoDB 实战 TodoList 基础入门
     - [5.POST请求和postman工具](#5post%E8%AF%B7%E6%B1%82%E5%92%8Cpostman%E5%B7%A5%E5%85%B7)
     - [6.上传文件](#6%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6)
     - [7.模版引擎介绍](#7%E6%A8%A1%E7%89%88%E5%BC%95%E6%93%8E%E4%BB%8B%E7%BB%8D)
+    - [8.使用模版引擎](#8%E4%BD%BF%E7%94%A8%E6%A8%A1%E7%89%88%E5%BC%95%E6%93%8E)
 
 ----
 
@@ -249,3 +250,32 @@ app.get('/form/:name', function (req, res) {
     - 在 Express 可以呈现模板文件之前，必须设置以下应用程序设置
     - views：模板文件所在目录。例如：app.set('views', './views') 默认
     - view engine：要使用的模板引擎。例如：app.set('view engine', 'ejs')
+
+## 8.使用模版引擎
+
+```js
+app.get('/form/:name', function (req, res) {
+    // var person = req.params.name
+    var person = { age: 29, job: 'CEO', hobbies: ['eating', 'coding', 'finshing']}
+    res.render('form', { person: person })
+})
+
+app.get('/about', function (req, res) {
+    // var person = req.params.name
+    res.render('about')
+})
+```
+
+```js
+<%- include('particals/header.ejs') -%>  // 引用模版
+    <h1><%= person %></h1>
+    <h1><%= person.age %></h1>
+    <h2>hobbies</h2>
+    <ul>  //遍历数组
+        <% person.hobbies.forEach(function(item){ %>
+            <li>
+                <%= item %>
+            </li>
+        <% }) %>
+    </ul>
+```

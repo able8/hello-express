@@ -58,8 +58,14 @@ app.post('/', urlencodedParser, function (req, res) {
 })
 
 app.get('/form/:name', function (req, res) {
-    var person = req.params.name
+    // var person = req.params.name
+    var person = { age: 29, job: 'CEO', hobbies: ['eating', 'coding', 'finshing']}
     res.render('form', { person: person })
+})
+
+app.get('/about', function (req, res) {
+    // var person = req.params.name
+    res.render('about')
 })
 
 app.post('/upload', upload.single('logo'), function (req, res) {

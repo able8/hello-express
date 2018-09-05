@@ -7,7 +7,17 @@
     <title>Document</title>
 </head>
 <body>
+    <%- include('particals/header.ejs') -%>
     <h1><%= person %></h1>
+    <h1><%= person.age %></h1>
+    <h2>hobbies</h2>
+    <ul>
+        <% person.hobbies.forEach(function(item){ %>
+            <li>
+                <%= item %>
+            </li>
+        <% }) %>
+    </ul>
     <form action="/upload" method="post" enctype="multipart/form-data">
         <h2>上传logo图片</h2>
         <input type="file" name="logo">
