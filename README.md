@@ -354,7 +354,7 @@ module.exports = router
 
 ## 12.项目实践 part 2 Controller
 
-- 单独存放控制器，处理路由请求
+- 新建 `controllers` 文件夹，单独存放控制器
 
 ```js
 //app.js
@@ -365,6 +365,7 @@ var app = express()
 
 app.set('view engine', 'ejs')
 
+// 指定public目录下为静态文件根目录
 app.use(express.static('public'))
 
 todoController(app)
@@ -386,4 +387,9 @@ module.exports = function (app) {
 }
 ```
 
+## 13.项目实践 part 3 实现页面
 
+- 新建 `views` 文件夹，存放模版页面，`todo.ejs`
+
+- 使用 [BootCDN](https://www.bootcdn.cn/#about) 在线免费 jQuery 库
+    - `https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js`
