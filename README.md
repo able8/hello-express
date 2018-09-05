@@ -33,6 +33,7 @@ Node.js + Express + MongoDB 实战 TodoList 基础入门
     - [12.项目实践 part 2 Controller](#12%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-part-2-controller)
     - [13.项目实践 part 3 实现页面](#13%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-part-3-%E5%AE%9E%E7%8E%B0%E9%A1%B5%E9%9D%A2)
     - [14.项目实践 part 4 实现功能](#14%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-part-4-%E5%AE%9E%E7%8E%B0%E5%8A%9F%E8%83%BD)
+    - [15.项目实践 part 5 MongoDB 和 mLab](#15%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-part-5-mongodb-%E5%92%8C-mlab)
 
 ----
 
@@ -481,4 +482,35 @@ $(document).ready(function() {
         });
     });
 });
+```
+
+## 15.项目实践 part 5 MongoDB 和 mLab
+
+- 使用 MongoDB 持久化数据
+    - nosql 非关系型的数据库，没有行列的概念，存储的 json 格式数据，用js很方便读取
+    - [MongoDB 概念解析](http://www.runoob.com/mongodb/mongodb-databases-documents-collections.html)
+    - collection	数据库表/集合
+    - document	数据记录行/文档
+    - primary key	主键,MongoDB自动将_id字段设置为主键
+
+- 使用线上免费 MongoDB 数据库 [mLab](https://mlab.com)
+    - Database-as-a-Service features
+    - MongoDB on AWS, Azure, or Google. It's this easy.
+    - 注册，创建数据库，创建数据库用户
+    - shell 连接 `mongo ds020208.mlab.com:20208/todos -u <dbuser> -p <dbpassword>
+`
+    - URI `mongodb://<dbuser>:<dbpassword>@ds020208.mlab.com:20208/todos`
+
+- [mongoose 用来操作数据库](https://mongoosejs.com)
+    - a MongoDB object modeling tool designed to work in an asynchronous environment.
+    - `npm install mongoose --save`
+
+```js
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/test');
+
+const Cat = mongoose.model('Cat', { name: String });
+
+const kitty = new Cat({ name: 'Zildjian' });
+kitty.save().then(() => console.log('meow'));
 ```
