@@ -16,9 +16,9 @@
             <button type="submit">ADD Item</button>
         </form>
         <ul>
-            <li>Item 1</li>
-            <li>Item 2</li>
-            <li>Item 3</li>
+            <% todos.forEach(function (todo) { %>
+                <li><%= todo.item %></li>
+            <% }) %>
         </ul>
     </div>
 </body>

@@ -27,6 +27,12 @@ Node.js + Express + MongoDB 实战 TodoList 基础入门
     - [6.上传文件](#6%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6)
     - [7.模版引擎介绍](#7%E6%A8%A1%E7%89%88%E5%BC%95%E6%93%8E%E4%BB%8B%E7%BB%8D)
     - [8.使用模版引擎](#8%E4%BD%BF%E7%94%A8%E6%A8%A1%E7%89%88%E5%BC%95%E6%93%8E)
+    - [9.中间件介绍](#9%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BB%8B%E7%BB%8D)
+    - [10.路由中间件](#10%E8%B7%AF%E7%94%B1%E4%B8%AD%E9%97%B4%E4%BB%B6)
+    - [11.项目实践 part 1 项目搭建](#11%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-part-1-%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA)
+    - [12.项目实践 part 2 Controller](#12%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-part-2-controller)
+    - [13.项目实践 part 3 实现页面](#13%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-part-3-%E5%AE%9E%E7%8E%B0%E9%A1%B5%E9%9D%A2)
+    - [14.项目实践 part 4 实现功能](#14%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-part-4-%E5%AE%9E%E7%8E%B0%E5%8A%9F%E8%83%BD)
 
 ----
 
@@ -393,3 +399,86 @@ module.exports = function (app) {
 
 - 使用 [BootCDN](https://www.bootcdn.cn/#about) 在线免费 jQuery 库
     - `https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js`
+
+## 14.项目实践 part 4 实现功能
+
+- `body-parser` 处理 post 请求
+- `ajax` 异步处理提交和删除
+
+```js
+// 显示添加表单和取出内容
+<div id="todo-table">
+    <form action="">
+        <input type="text" name="item" placeholder="Add new item..." required />
+        <button type="submit">ADD Item</button>
+    </form>
+    <ul>
+        <% todos.forEach(function (todo) { %>
+            <li><%= todo.item %></li>
+        <% }) %>
+    </ul>
+</div>
+```
+
+
+```js
+var bodyParser = require('body-parser')
+var urlencodeParser = bodyParser.urlencoded({ extended: false})
+var data = [{item: 'get milk'}, {item: 'walk dog'}, {item: 'coding a'}]
+
+module.exports = function (app) {
+    app.get('/todo', function (req, res) {
+        res.render('todo', { todos: data })
+    })
+
+    app.post('/todo', urlencodeParser, function (req, res) {
+        data.push(req.body)
+        res.json(data) // 回复结束响应，可以回复其它的
+    })
+
+    app.delete('/todo/:item', function (req, res) {
+        data = data.filter(function (todo) { // 返回为true的内容
+           return todo.item.replace(/ /g, "-") !== req.params.item
+        })
+        res.json(data)
+        console.log(data)
+    })
+}
+```
+
+```js
+// ajax 处理点击提交 和 删除，异步处理
+$(document).ready(function() {
+
+    $('form').on('submit', function(event) {
+        event.preventDefault();
+        var item = $('form input');
+        var todo = { item: item.val().trim() };
+
+        $.ajax({
+            type: 'POST',
+            url: '/todo',
+            data: todo,
+            success: function(data) {
+                //do something with the data via front-end framework
+                location.reload();
+            }
+        });
+
+        return false;
+
+    });
+
+    $('li').on('click', function() {
+        var item = $(this).text().trim().replace(/ /g, "-");
+        $.ajax({
+            type: 'DELETE',
+            url: '/todo/' + item,
+            success: function(data) {
+                //do something with the data via front-end framework
+                location.reload();
+            }
+        });
+    });
+});
+```
