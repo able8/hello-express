@@ -345,3 +345,9 @@ router.get('/', function (req, res, next) {
 
 module.exports = router
 ```
+
+## 11.项目实践 part 1 项目搭建
+
+- express-todolist 实践项目
+    - `npm init -y` 初始化 package.json
+    - `npm install --save express body-parser ejs` 安装包
