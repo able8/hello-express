@@ -90,4 +90,27 @@ app.get('/ab?cd', function (req, res) {
 })
 ```
 
+## 4.查询字符串
 
+- [req.query](http://expressjs.com/en/4x/api.html#app.use)
+
+
+```js
+// GET /shoes?order=desc&shoe[color]=blue&shoe[type]=converse
+req.query.order
+// => "desc"
+
+req.query.shoe.color
+// => "blue"
+
+req.query.shoe.type
+// => "converse"
+```
+
+```js
+// http://127.0.0.1:3000/?find=hot
+app.get('/', function (req, res) {
+    console.dir(req.query) // => { find: 'hot' }
+    res.send('home page: ' + req.query.find)
+})
+```
