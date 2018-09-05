@@ -279,3 +279,45 @@ app.get('/about', function (req, res) {
         <% }) %>
     </ul>
 ```
+
+## 9.中间件介绍
+
+- [中间件 (middleware)](http://expressjs.com/zh-cn/guide/using-middleware.html)
+    - Express 是一个路由和中间件 Web 框架
+    - Express 应用程序基本上是一系列中间件函数调用
+    - 中间件介于 请求对象 (req)、响应对象 (res) 中间
+    - 可以有多个中间件
+    - 下一个中间件函数通常由名为 next 的变量来表示
+    - 如果当前中间件函数没有结束请求/响应循环那么它必须调用 next()，以将控制权传递给下一个中间件函数。否则，请求将保持挂起状态。
+
+
+- 中间件作用
+    - 对请求和响应对象进行更改
+    - 结束请求或响应循环
+    - 调用堆栈中的下一个中间件函数
+
+```js
+// 没有路径的中间件函数, 每次收到请求时执行该函数。
+app.use(function (req, res, next) {
+    console.log('first middleware')
+    next() // 没有响应请求，需要将控制权传递给下一个中间件函数
+    console.log('first middleware after next')
+})
+
+// 安装在某个路径的中间件函数
+app.use('/m', function (req, res, next) {
+    console.log('second middleware')
+    res.send('ok')
+})
+
+// app.get('/m', function (req, res, next) {
+//     res.send('ok')
+// })
+```
+
+- 内置中间件
+    - Express 中唯一内置的中间件函数是 express.static
+    - 负责提供 Express 应用程序的静态资源
+    - `app.use(express.static('public'));` 指定静态资源根目录
+    - `app.use('static', express.static('public'));` 前缀目录static/a.png
+

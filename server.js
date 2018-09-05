@@ -37,6 +37,24 @@ var storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage });
 
+app.use(express.static('public'))
+
+// 没有路径的中间件函数, 每次收到请求时执行该函数。
+app.use(function (req, res, next) {
+    console.log('first middleware')
+    next() // 没有响应请求，需要将控制权传递给下一个中间件函数
+    console.log('first middleware after next')
+})
+
+// 安装在某个路径的中间件函数
+app.use('/m', function (req, res, next) {
+    console.log('second middleware')
+    res.send('ok')
+})
+
+// app.get('/m', function (req, res, next) {
+//     res.send('ok')
+// })
 
 app.get('/', function (req, res) {
     console.dir(req.query)
