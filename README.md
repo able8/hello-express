@@ -11,6 +11,7 @@ Node.js + Express + MongoDB 实战 TodoList 基础入门
 
 - [express 官网](http://expressjs.com/)
 - [express github](https://github.com/expressjs/express)
+- [Nodejs学习笔记以及经验总结](https://github.com/chyingp/nodejs-learning-guide)
 
 看视频整理要点笔记:
 
@@ -22,6 +23,7 @@ Node.js + Express + MongoDB 实战 TodoList 基础入门
     - [3.路由参数](#3%E8%B7%AF%E7%94%B1%E5%8F%82%E6%95%B0)
     - [4.查询字符串](#4%E6%9F%A5%E8%AF%A2%E5%AD%97%E7%AC%A6%E4%B8%B2)
     - [5.POST请求和postman工具](#5post%E8%AF%B7%E6%B1%82%E5%92%8Cpostman%E5%B7%A5%E5%85%B7)
+    - [6.上传文件](#6%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6)
 
 ----
 
@@ -39,7 +41,6 @@ Node.js + Express + MongoDB 实战 TodoList 基础入门
     - `npm init -y` 默认模式生成 `package.json`
     - `npm install --save express` 安装框架
     - `npm install -g nodemon` 方便调试，`nodemon xxx` 启动应用
-
 
 ```js
 var express = require('express')
@@ -137,7 +138,7 @@ app.get('/', function (req, res) {
     - HTTP/1.1 协议规定的 HTTP 请求方法有 OPTIONS、GET、HEAD、POST、PUT、DELETE、TRACE、CONNECT 这几种
     - POST 一般用来向服务端提交数据
     - application/x-www-form-urlencoded 普通表单提交
-    - multipart/form-data 可以上传文件的表单，必须让 <form> 表单的 nctype 等于 multipart/form-data
+    - multipart/form-data 可以上传文件的表单
 
 ```js
 var bodyParser = require('body-parser')
@@ -154,5 +155,60 @@ app.post('/', urlencodedParser, function (req, res) {
 app.post('/upload', jsonParser, function (req, res) {
     console.dir(req.body)
     res.send('ok')
+})
+```
+
+## 6.上传文件
+
+- [Multer 包](https://www.npmjs.com/package/multer) 处理上传文件
+> Multer is a node.js middleware for handling multipart/form-data, which is primarily used for uploading files.
+
+- 安装 `npm install --save multer`
+
+- [基于express+multer的文件上传](https://www.cnblogs.com/chyingp/p/express-multer-file-upload.html)
+- 上传文件的表单需要指定 `enctype="multipart/form-data"`
+- postman 上传文件，post body form-data
+
+```js
+// form.html
+<form action="/upload" method="post" enctype="multipart/form-data">
+    <h2>上传logo图片</h2>
+    <input type="file" name="logo">
+    <input type="submit" value="提交">
+</form>
+```
+
+```js
+// 创建目录，上传文件
+var createFolder = function (folder) {
+    try {
+        fs.accessSync(folder);
+    } catch (e) {
+        fs.mkdirSync(folder);
+    }
+};
+
+var uploadFolder = './upload/';
+
+createFolder(uploadFolder);
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, uploadFolder);
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    }
+});
+var upload = multer({ storage: storage });
+
+app.get('/form', function (req, res) {
+    var form = fs.readFileSync('./form.html', { encoding: "utf8" })
+    res.send(form)
+})
+
+app.post('/upload', upload.single('logo'), function (req, res) {
+    console.dir(req.file); // 列出文件的所有属性
+    res.send({ 'ret_code': 0 })
 })
 ```
