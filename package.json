@@ -1,0 +1,23 @@
+{
+  "name": "hello-express",
+  "version": "1.0.0",
+  "description": "Node.js + Express + MongoDB 实战 TodoList 基础入门",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/able8/hello-express.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/able8/hello-express/issues"
+  },
+  "homepage": "https://github.com/able8/hello-express#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
