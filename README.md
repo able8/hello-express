@@ -351,3 +351,39 @@ module.exports = router
 - express-todolist 实践项目
     - `npm init -y` 初始化 package.json
     - `npm install --save express body-parser ejs` 安装包
+
+## 12.项目实践 part 2 Controller
+
+- 单独存放控制器，处理路由请求
+
+```js
+//app.js
+var express = require('express')
+var todoController = require('./controllers/todoController')
+
+var app = express()
+
+app.set('view engine', 'ejs')
+
+app.use(express.static('public'))
+
+todoController(app)
+
+app.listen(3000)
+
+console.log('listening to port 3000')
+
+// todoController.js
+module.exports = function (app) {
+    app.get('/todo', function (req, res) {
+    })
+
+    app.post('/todo', function (req, res) {
+    })
+
+    app.delete('/todo', function (req, res) {
+    })
+}
+```
+
+
