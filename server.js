@@ -1,10 +1,14 @@
 var express = require('express')
 var fs = require('fs')
 var bodyParser = require('body-parser')
+
 var multer = require('multer')
 //var upload = multer({ dest: 'uploads/'}) // 创建上传目录
 
 var app = express()
+
+app.set('view engine', 'ejs')
+
 // create application/json parser
 var jsonParser = bodyParser.json()
 // 使用中间件，在请求和响应中间处理 create application/x-www-form-urlencoded parser
@@ -53,9 +57,9 @@ app.post('/', urlencodedParser, function (req, res) {
     res.send('ok')
 })
 
-app.get('/form', function (req, res) {
-    var form = fs.readFileSync('./form.html', { encoding: "utf8" })
-    res.send(form)
+app.get('/form/:name', function (req, res) {
+    var person = req.params.name
+    res.render('form', { person: person })
 })
 
 app.post('/upload', upload.single('logo'), function (req, res) {
