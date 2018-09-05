@@ -321,3 +321,27 @@ app.use('/m', function (req, res, next) {
     - `app.use(express.static('public'));` 指定静态资源根目录
     - `app.use('static', express.static('public'));` 前缀目录static/a.png
 
+## 10.路由中间件
+
+- 路由器层中间件绑定到 express.Router() 的实例
+- 分离路由到子文件目录中，最上次只调用，总分路由
+
+```js
+// server.js
+var indexRouter = require('./routes/index')
+var usersRouter = require('./routes/users')
+
+app.use('/', indexRouter)
+app.use('/users', usersRouter)
+
+// users.js
+var express = require('express')
+
+var router = express.Router()
+// 这里注意，因为前面路由匹配到/users了，这里直接时根即可，二级目录
+router.get('/', function (req, res, next) {
+    res.send('users')
+})
+
+module.exports = router
+```

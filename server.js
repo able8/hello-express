@@ -56,6 +56,12 @@ app.use('/m', function (req, res, next) {
 //     res.send('ok')
 // })
 
+var indexRouter = require('./routes/index')
+var usersRouter = require('./routes/users')
+
+app.use('/', indexRouter)
+app.use('/users', usersRouter)
+
 app.get('/', function (req, res) {
     console.dir(req.query)
     res.send('home page: ' + req.query.find)
