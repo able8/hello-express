@@ -3,7 +3,8 @@ var express = require('express')
 var app = express()
 
 app.get('/', function (req, res) {
-    res.send('this is homepage')
+    var responseObject = req.ip
+    res.send(responseObject)
 })
 
 app.listen(3000)

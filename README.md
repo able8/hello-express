@@ -41,3 +41,33 @@ app.get('/', function (req, res) {
 
 app.listen(3000)
 ```
+
+## 2.请求与响应
+
+- 学会查看 [官网 API 文档](http://expressjs.com/en/4x/api.html)，最快最全
+- [res.send([body])](http://expressjs.com/en/4x/api.html#res.send)
+- [req.ip](http://expressjs.com/en/4x/api.html#req.ip)
+
+```js
+res.send(new Buffer('whoop'));
+res.send({ some: 'json' });
+res.send('<p>some html</p>');
+res.status(404).send('Sorry, we cannot find that!');
+res.status(500).send({ error: 'something blew up' });
+
+res.json({ user: 'tobi' });
+res.status(500).json({ error: 'message' });
+
+req.ip
+// => "127.0.0.1"
+
+// GET /search?q=tobi+ferret
+req.query.q
+// => "tobi ferret"
+
+// example.com/users?sort=desc
+req.path
+// => "/users"
+```
+
+
