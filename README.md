@@ -34,6 +34,7 @@ Node.js + Express + MongoDB 实战 TodoList 基础入门
     - [13.项目实践 part 3 实现页面](#13%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-part-3-%E5%AE%9E%E7%8E%B0%E9%A1%B5%E9%9D%A2)
     - [14.项目实践 part 4 实现功能](#14%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-part-4-%E5%AE%9E%E7%8E%B0%E5%8A%9F%E8%83%BD)
     - [15.项目实践 part 5 MongoDB 和 mLab](#15%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-part-5-mongodb-%E5%92%8C-mlab)
+    - [16.项目实践 part 6 Mongoose](#16%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-part-6-mongoose)
 
 ----
 
@@ -501,16 +502,26 @@ $(document).ready(function() {
 `
     - URI `mongodb://<dbuser>:<dbpassword>@ds020208.mlab.com:20208/todos`
 
+## 16.项目实践 part 6 Mongoose
+
 - [mongoose 用来操作数据库](https://mongoosejs.com)
     - a MongoDB object modeling tool designed to work in an asynchronous environment.
     - `npm install mongoose --save`
+    - 安装，连接，定义 Schema、model ，规定数据类型一致
 
 ```js
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
+const mongoose = require('mongoose')
+mongoose.connect('mongodb://able8:xx@ds020208.mlab.com:20208/todos')
 
-const Cat = mongoose.model('Cat', { name: String });
-
-const kitty = new Cat({ name: 'Zildjian' });
-kitty.save().then(() => console.log('meow'));
+// Schema 模式，规定数据类型
+var todoSchema = new mongoose.Schema({
+    item: String // 字段名，字符串
+})
+//对应数据库中的表
+var Todo = mongoose.model('Todo', todoSchema)
+// 添加一条数据
+var itemOne = Todo({ item: 'buy flowers'}).save(function (err) {
+    if (err) throw err
+    console.log('item saved')
+})
 ```
