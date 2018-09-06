@@ -35,6 +35,7 @@ Node.js + Express + MongoDB 实战 TodoList 基础入门
     - [14.项目实践 part 4 实现功能](#14%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-part-4-%E5%AE%9E%E7%8E%B0%E5%8A%9F%E8%83%BD)
     - [15.项目实践 part 5 MongoDB 和 mLab](#15%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-part-5-mongodb-%E5%92%8C-mlab)
     - [16.项目实践 part 6 Mongoose](#16%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-part-6-mongoose)
+    - [17.项目实践 part 7 保持数据到 MongoDB](#17%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-part-7-%E4%BF%9D%E6%8C%81%E6%95%B0%E6%8D%AE%E5%88%B0-mongodb)
 
 ----
 
@@ -524,4 +525,37 @@ var itemOne = Todo({ item: 'buy flowers'}).save(function (err) {
     if (err) throw err
     console.log('item saved')
 })
+```
+
+## 17.项目实践 part 7 保持数据到 MongoDB
+
+- 操作数据，读取，添加，删除
+- 实践测试 mLab 国内访问太慢了， 简单测试还可以
+- 其他可选包 [mongolass](https://github.com/mongolass/mongolass)
+    - [mongolass 知乎](https://zhuanlan.zhihu.com/p/24308524)
+
+```js
+    app.get('/todo', function (req, res) {
+        Todo.find({}, function (err, data) {
+            if (err) throw err
+            res.render('todo', { todos: data })
+        })
+    })
+
+    app.post('/todo', urlencodeParser, function (req, res) {
+        var itemOne = Todo(req.body).save(function (err, data) {
+            if (err) throw err
+            res.json(data)
+        })
+    })
+
+    app.delete('/todo/:item', function (req, res) {
+        // data = data.filter(function (todo) { // 返回为true的内容
+        //    return todo.item.replace(/ /g, "-") !== req.params.item
+        // })
+        Todo.find({item: req.params.item.replace(/ /g, '-')}).remove(function (err, data) {
+            if (err) throw err
+            res.json(data)
+        })
+    })
 ```
